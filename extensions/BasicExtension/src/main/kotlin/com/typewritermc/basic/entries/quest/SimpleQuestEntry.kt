@@ -10,6 +10,7 @@ import com.typewritermc.engine.paper.entry.entries.QuestEntry
 import com.typewritermc.engine.paper.entry.entries.ReadableFactEntry
 import com.typewritermc.engine.paper.entry.matches
 import com.typewritermc.engine.paper.entry.quest.QuestStatus
+import com.typewritermc.engine.paper.utils.item.Item
 import org.bukkit.entity.Player
 
 @Entry("quest", "A quest definition", Colors.MEDIUM_PURPLE, "material-symbols:book-2")
@@ -31,6 +32,7 @@ class SimpleQuestEntry(
     override val name: String = "",
     override val children: List<Ref<AudienceEntry>> = emptyList(),
     override val displayName: String = "",
+    override val item: Item = Item.Empty,
     @Help("When the criteria is met, it considers the quest to be active.")
     val activeCriteria: List<Criteria> = emptyList(),
 

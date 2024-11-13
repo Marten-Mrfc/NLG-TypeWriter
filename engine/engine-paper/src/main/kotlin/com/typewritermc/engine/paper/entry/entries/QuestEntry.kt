@@ -16,6 +16,7 @@ import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.snippets.snippet
 import com.typewritermc.engine.paper.utils.asMini
 import com.typewritermc.engine.paper.utils.asMiniWithResolvers
+import com.typewritermc.engine.paper.utils.item.Item
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder.parsed
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -28,7 +29,8 @@ interface QuestEntry : AudienceFilterEntry, PlaceholderEntry {
     @Colored
     @Placeholder
     val displayName: String
-
+    @Help("The item that represents the quest.")
+    val item: Item
     val facts: List<Ref<ReadableFactEntry>> get() = emptyList()
     fun questStatus(player: Player): QuestStatus
 

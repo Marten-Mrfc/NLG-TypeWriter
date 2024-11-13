@@ -32,7 +32,7 @@ dependencies {
     for (dependency in centralDependencies) {
         compileOnlyApi(dependency)
     }
-    compileOnlyApi("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+    compileOnlyApi("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
 
     api(project(":engine-core"))
     api(project(":engine-loader"))
@@ -180,7 +180,7 @@ bukkitPluginYaml {
     version = project.version.toString()
 
     main = "com.typewritermc.engine.paper.TypewriterPaperPlugin"
-    apiVersion = "1.21"
+    apiVersion = "1.20.6"
     depend = listOf("packetevents")
     softDepend = listOf("PlaceholderAPI", "floodgate")
     libraries = centralDependencies
