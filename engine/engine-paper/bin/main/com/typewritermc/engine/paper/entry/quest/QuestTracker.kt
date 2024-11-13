@@ -124,6 +124,7 @@ class QuestTracker(
     }
 }
 
+val Player.tracker: QuestTracker?
     get() = with(get<InteractionHandler>(InteractionHandler::class.java)) {
         interaction?.questTracker
     }
