@@ -27,6 +27,16 @@ fun questsGui(player: Player, type: String): Inventory {
             }
         }
     }
+    fun loadPageColor(type: String) {
+        val color = when (type) {
+            "Untracked" -> Material.RED_STAINED_GLASS_PANE
+            "Tracked" -> Material.YELLOW_STAINED_GLASS_PANE
+            "Completed" -> Material.GREEN_STAINED_GLASS_PANE
+            else -> Material.BLACK_STAINED_GLASS_PANE
+        }
+        listOf(7, 16, 25, 34, 43).forEach { gui.setItem(it, ItemStack(color)) }
+    }
+
     fun loadData() {
         val (quests, status) = when (type) {
             "Untracked" -> player.inactiveQuests() to "Untracked"
@@ -37,10 +47,30 @@ fun questsGui(player: Player, type: String): Inventory {
                 return
             }
         }
+        loadPageColor(type)
         addQuestsToGui(quests, status)
     }
 
+    fun controls(control: String, material: Material) = ItemStack(material).apply {
+        itemMeta = itemMeta?.apply {
+            displayName("<white>$control</white>".asMini())
+            setCustomValue(this, plugin, "Control", control)
         }
     }
+
+    fun loadControls() {
+        listOf(
+            8 to controls("Previous", Material.ARROW),
+            17 to controls("Untracked", Material.BARRIER),
+            26 to controls("Tracked", Material.COMPASS),
+            35 to controls("Completed", Material.DIAMOND),
+            44 to controls("Next", Material.ARROW),
+            ).forEach { (index, item) ->
+            gui.setItem(index, item)
+        }
+    }
+
+    loadControls()
+    loadData()
     return gui
 }
