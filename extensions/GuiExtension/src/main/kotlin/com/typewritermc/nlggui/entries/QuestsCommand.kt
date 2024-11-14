@@ -12,6 +12,6 @@ fun commands() = CommandAPICommand("quests")
             sender.sendMessage("Only players can use this command")
             return@CommandExecutor
         }
-        sender.openInventory(questsGui(sender, "active"))
+        sender.openInventory(questsGui(sender, "Tracked"))
     })
     .register()

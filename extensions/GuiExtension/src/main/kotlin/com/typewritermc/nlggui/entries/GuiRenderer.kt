@@ -6,6 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.engine.paper.entry.entries.QuestEntry
+import com.typewritermc.engine.paper.plugin
 import com.typewritermc.engine.paper.utils.sendMini
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -13,29 +14,32 @@ import org.bukkit.inventory.ItemStack
 fun questsGui(player: Player, type: String): Inventory {
     val gui = Bukkit.createInventory(player, 45, "<white>${player.name}'s quests</white>".asMini())
 
-    // Function to add quests to the GUI
     fun addQuestsToGui(quests: List<Ref<QuestEntry>>, status: String) {
-        for (questRef in quests) {
-            val quest = questRef.get() ?: continue
-            val itemName = "${quest.name}: $status"
-            println(quest)
-            // Use the item that represents the quest
-            val itemStack = quest.item.build(player)
-            println("ItemStack: $itemStack")
-            val meta = itemStack.itemMeta
-            meta?.displayName(itemName.asMini())
-            itemStack.itemMeta = meta
-            gui.addItem(itemStack)
+        quests.forEach { questRef ->
+            questRef.get()?.let { quest ->
+                val itemStack = quest.item.build(player).apply {
+                    itemMeta = itemMeta?.apply {
+                        displayName("<white>${quest.name}: $status</white>".asMini())
+                        setCustomValue(this, plugin, "Quest", questRef)
+                    }
+                }
+                gui.addItem(itemStack)
+            }
         }
     }
+    fun loadData() {
+        val (quests, status) = when (type) {
+            "Untracked" -> player.inactiveQuests() to "Untracked"
+            "Tracked" -> player.activeQuests() to "Tracked"
+            "Completed" -> player.completedQuests() to "Completed"
+            else -> {
+                player.sendMini("<red>Invalid type</red><gray>:</gray><white> $type contacteer een admin.")
+                return
+            }
+        }
+        addQuestsToGui(quests, status)
+    }
 
-    // Add quests to the GUI based on the type
-    when (type.lowercase()) {
-        "inactive" -> addQuestsToGui(player.inactiveQuests(), "Inactive")
-        "active" -> addQuestsToGui(player.activeQuests(), "Active")
-        "completed" -> addQuestsToGui(player.completedQuests(), "Completed")
-        else -> {
-            player.sendMini("<red>ERROR</red><gray>:</gray><white>Valse GUI type gevonden: $type. Contacteer a.u.b. een admin.")
         }
     }
     return gui
