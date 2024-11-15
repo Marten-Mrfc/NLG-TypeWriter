@@ -1,9 +1,8 @@
-package com.typewritermc.nlggui.entries
+package com.typewritermc.nlggui
 
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.executors.CommandExecutor
 import org.bukkit.entity.Player
-import org.bukkit.inventory.Inventory
 
 fun commands() = CommandAPICommand("quests")
     .withAliases("q", "quest", "nlgquests")
@@ -12,6 +11,7 @@ fun commands() = CommandAPICommand("quests")
             sender.sendMessage("Only players can use this command")
             return@CommandExecutor
         }
-        sender.openInventory(questsGui(sender, "Tracked"))
+        // Open the first page of "Tracked" quests
+        sender.openInventory(questsGui(sender, "Active", 1))
     })
     .register()

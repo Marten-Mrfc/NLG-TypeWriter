@@ -1,4 +1,4 @@
-package com.typewritermc.nlggui.entries
+package com.typewritermc.nlggui.utils
 
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.engine.paper.entry.entries.QuestEntry

@@ -1,8 +1,8 @@
 import com.typewritermc.core.extension.Initializable
 import com.typewritermc.core.extension.annotations.Initializer
 import com.typewritermc.engine.paper.plugin
-import com.typewritermc.nlggui.entries.commands
-import com.typewritermc.nlggui.entries.GuiListener
+import com.typewritermc.nlggui.commands
+import com.typewritermc.nlggui.GuiListener
 import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.plugin.PluginManager
