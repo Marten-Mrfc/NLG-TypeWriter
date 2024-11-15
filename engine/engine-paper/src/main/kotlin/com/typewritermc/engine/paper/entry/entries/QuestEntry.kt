@@ -29,8 +29,17 @@ interface QuestEntry : AudienceFilterEntry, PlaceholderEntry {
     @Colored
     @Placeholder
     val displayName: String
+    @Help("The description of the quest.")
+    @Colored
+    @Placeholder
+    val description: String
     @Help("The item that represents the quest.")
     val item: Item
+    @Help("When the criteria is met, it considers the quest to be active.")
+    val activeCriteria: List<Criteria>
+
+    @Help("When the criteria is met, it considers the quest to be completed.")
+    val completedCriteria: List<Criteria>
     val facts: List<Ref<ReadableFactEntry>> get() = emptyList()
     fun questStatus(player: Player): QuestStatus
 

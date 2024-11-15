@@ -33,11 +33,9 @@ class SimpleQuestEntry(
     override val children: List<Ref<AudienceEntry>> = emptyList(),
     override val displayName: String = "",
     override val item: Item = Item.Empty,
-    @Help("When the criteria is met, it considers the quest to be active.")
-    val activeCriteria: List<Criteria> = emptyList(),
-
-    @Help("When the criteria is met, it considers the quest to be completed.")
-    val completedCriteria: List<Criteria> = emptyList(),
+    override val description: String = "",
+    override val activeCriteria: List<Criteria> = emptyList(),
+    override val completedCriteria: List<Criteria> = emptyList(),
 ) : QuestEntry {
     override val facts: List<Ref<ReadableFactEntry>>
         get() = (activeCriteria + completedCriteria).map { it.fact }
