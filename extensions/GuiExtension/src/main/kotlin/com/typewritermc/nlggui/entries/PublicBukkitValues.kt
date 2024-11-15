@@ -1,5 +1,6 @@
 package com.typewritermc.nlggui.entries
 
+import com.typewritermc.core.entries.Ref
 import com.typewritermc.engine.paper.TypewriterPaperPlugin
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.meta.ItemMeta
@@ -16,24 +17,7 @@ fun setCustomValue(meta: ItemMeta, plugin: TypewriterPaperPlugin, id: String, va
             val combinedString = stringList.joinToString(",")
             meta.persistentDataContainer.set(key, PersistentDataType.STRING, combinedString)
         }
-    }
-}
-fun checkCustomValue(meta: ItemMeta, plugin: TypewriterPaperPlugin, id: String, value: Any): Boolean {
-    val key = NamespacedKey(plugin, id)
-    return when (value) {
-        is String -> {
-            val storedValue = meta.persistentDataContainer.get(key, PersistentDataType.STRING)
-            val storedList = storedValue?.split(",") ?: emptyList()
-            storedList.contains(value)
-        }
-        is Boolean -> meta.persistentDataContainer.get(key, PersistentDataType.BOOLEAN) == value
-        is Int -> meta.persistentDataContainer.get(key, PersistentDataType.INTEGER) == value
-        is List<*> -> {
-            val storedValue = meta.persistentDataContainer.get(key, PersistentDataType.STRING)
-            val storedList = storedValue?.split(",") ?: emptyList()
-            storedList.containsAll(value)
-        }
-        else -> false
+        is Ref<*> -> meta.persistentDataContainer.set(key, PersistentDataType.STRING, value.id)
     }
 }
 fun getCustomValue(meta: ItemMeta, plugin: TypewriterPaperPlugin, id: String): Any? {
