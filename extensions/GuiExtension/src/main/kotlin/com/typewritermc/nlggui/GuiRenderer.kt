@@ -56,7 +56,9 @@ fun questsGui(player: Player, type: String, page: Int): Inventory {
                         if (quest.description.isNotEmpty()) {
                             loreList.add("<gray>${quest.description}</gray>".asMini())
                         }
-                        loreList.add("<gray>Status: $activeCriteriaCount/$completedCriteriaCount</gray>".asMini())
+                        if(type != "Inactive" ) {
+                            loreList.add("<gray>Status: $activeCriteriaCount/$completedCriteriaCount</gray>".asMini())
+                        }
                         lore(loreList)
                         setCustomValue(this, plugin, "Quest", questRef)
                         setCustomValue(this, plugin, "Type", type)
@@ -81,37 +83,37 @@ fun questsGui(player: Player, type: String, page: Int): Inventory {
             "Completed" -> Material.GREEN_STAINED_GLASS_PANE
             else -> Material.BLACK_STAINED_GLASS_PANE
         }
-        val item = ItemStack(color)
-        item.itemMeta.displayName("<white>$type</white>".asMini())
+        val item = ItemStack(color).apply { itemMeta = itemMeta?.apply { displayName("<white></white>".asMini()) } }
         listOf(7, 16, 25, 34, 43).forEach { gui.setItem(it, item) }
     }
 
-    fun controls(control: String, material: Material) = ItemStack(material).apply {
+    fun controls(control: String, material: Material, color: String) = ItemStack(material).apply {
         itemMeta = itemMeta?.apply {
-            displayName("<white>$control</white>".asMini())
+            displayName("<$color>$control</$color>".asMini())
             setCustomValue(this, plugin, "Control", control)
             setCustomValue(this, plugin, "Page", page.toString())
             setCustomValue(this, plugin, "Type", type)
             if (control == type) {
                 addEnchant(Enchantment.UNBREAKING, 1, true)
                 addItemFlags(ItemFlag.HIDE_ENCHANTS)
+                displayName("<b>${displayName()?.asMini()}</b>".asMini())
             }
         }
     }
 
     fun loadControls(totalQuests: Int) {
         val totalPages = (totalQuests + QUESTS_PER_PAGE - 1) / QUESTS_PER_PAGE
-        if (page > 1) { gui.setItem(8, controls("Previous", Material.ARROW)) }
-        else { gui.setItem(8, controls("Previous", Material.BARRIER)) }
+        if (page > 1) { gui.setItem(8, controls("Previous", Material.ARROW, "gray")) }
+        else { gui.setItem(8, controls("Previous", Material.BARRIER, "dark_gray")) }
 
         listOf(
-            17 to controls("Inactive", Material.PAPER),
-            26 to controls("Active", Material.COMPASS),
-            35 to controls("Completed", Material.GOLDEN_SWORD)
+            17 to controls("Inactive", Material.PAPER, "red"),
+            26 to controls("Active", Material.COMPASS, "yellow"),
+            35 to controls("Completed", Material.GOLDEN_SWORD, "green")
         ).forEach { (index, item) -> gui.setItem(index, item) }
 
-        if (page < totalPages) { gui.setItem(44, controls("Next", Material.ARROW)) }
-        else { gui.setItem(44, controls("Next", Material.BARRIER)) }
+        if (page < totalPages) { gui.setItem(44, controls("Next", Material.ARROW, "gray")) }
+        else { gui.setItem(44, controls("Next", Material.BARRIER, "dark_gray")) }
     }
 
     fun loadData(page: Int) {
@@ -120,7 +122,7 @@ fun questsGui(player: Player, type: String, page: Int): Inventory {
             "Active" -> player.activeQuests() to "Active"
             "Completed" -> player.completedQuests() to "Completed"
             else -> {
-                player.sendMini("<red>Invalid type</red><gray>:</gray><white> $type contacteer een admin.")
+                player.sendMini("<red>Ongeldig type</red><gray>:</gray><white> $type contacteer A.U.B. een admin.")
                 return
             }
         }

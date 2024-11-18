@@ -42,11 +42,11 @@ class GuiListener : Listener {
                 questRef?.get()?.let {
                     player.isQuestTracked(questRef).let { isTracked ->
                         if (isTracked) {
-                            player.sendMini("<red>Quest untracked</red>")
+                            player.sendMini("<red>Quest ${questRef.entry?.displayName} untracked</red>")
                             player.unTrackQuest()
                             player.openInventory(questsGui(player, type, currentPage))
                         } else {
-                            player.sendMini("<green>Quest tracked</green>")
+                            player.sendMini("<green>Quest: ${questRef.entry?.displayName} tracked</green>")
                             player.unTrackQuest()
                             player.trackQuest(questRef)
                             player.openInventory(questsGui(player, type, currentPage))
